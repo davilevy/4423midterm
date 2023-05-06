@@ -6,25 +6,37 @@ using UnityEngine.SceneManagement;
 
 public class Character : MonoBehaviour
 {
+  private float characterHeight;
+  private float characterWidth;
 
   [Header("Movement")]
-  public float speed = 10f;
+  public float speed = 20f;
   public float forceMultiplier = 10f;
 
   [Header("Outside Objects")]
   Rigidbody2D _rb2d;
 
   [Header("Text Elements")]
-  int points = 0;
+  public int points = 0;
+  public int level = 1;
+  public Text levelText;
   public Text pointText;
+  
+  [SerializeField]
+  public AudioClip crash;
+  public AudioSource audioPlayer;
+
+  private LevelUp levelup;
     // Start is called before the first frame update
-    void Start()
+  void Start()
     {
         _rb2d = GetComponent<Rigidbody2D>();
+        // characterHeight = GetComponent<SpriteRenderer>.bounds.size.y / 2;
+        // characterWidth = GetComponent<SpriteRenderer>.bounds.size.x / 2;
     }
 
     // Update is called once per frame
-    void Update()
+  void Update()
     {
 
     }
@@ -43,10 +55,16 @@ public class Character : MonoBehaviour
       if(other.tag == "Fuel"){
         Destroy(other.gameObject);
         points+=1;
+        if (points %10 == 0) {
+          level += 1;
+          levelup.onNewLevel();
+        }
+        other.GetComponent<RocketFuel>().Catch();
         pointText.text = "Score: " + points.ToString();
       }
       if(other.tag == "Brick"){
         Debug.Log("Game Over");
+        other.GetComponent<Brick>().Crash();
         SceneManager.LoadScene("MainMenu");
       }
     }

@@ -25,7 +25,7 @@ public class FuelDrop : MonoBehaviour
 
       while(true){
         Vector3 dropOff = new Vector3(Random.Range(-12f,12f),7.5f,0);
-        yield return new WaitForSeconds(0);
+        yield return new WaitForSeconds(Random.Range(1,5));
         Instantiate(fuelPrefab, dropOff, Quaternion.identity);
       }
     }

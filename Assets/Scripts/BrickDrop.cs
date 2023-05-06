@@ -24,7 +24,7 @@ public class BrickDrop : MonoBehaviour
 
         while(true){
           Vector3 headBonk = new Vector3(Random.Range(-12f,12f),7.5f,0);
-          yield return new WaitForSeconds(wait);
+          yield return new WaitForSeconds(Random.Range(1,5));
           Instantiate(brickPrefab, headBonk, Quaternion.identity);
         }
       }
