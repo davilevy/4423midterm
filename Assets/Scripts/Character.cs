@@ -26,6 +26,8 @@ public class Character : MonoBehaviour
   public AudioClip crash;
   public AudioSource audioPlayer;
 
+  public static Character instance; 
+  private void Awake() => instance = this;
   private LevelUp levelup;
     // Start is called before the first frame update
   void Start()
@@ -55,12 +57,12 @@ public class Character : MonoBehaviour
       if(other.tag == "Fuel"){
         Destroy(other.gameObject);
         points+=1;
-        if (points %10 == 0) {
+        if (points % 3 == 0) {
           level += 1;
           levelup.onNewLevel();
         }
         other.GetComponent<RocketFuel>().Catch();
-        pointText.text = "Score: " + points.ToString();
+        pointText.text = "Level: " + level.ToString();
       }
       if(other.tag == "Brick"){
         Debug.Log("Game Over");
