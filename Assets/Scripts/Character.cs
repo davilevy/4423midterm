@@ -26,6 +26,8 @@ public class Character : MonoBehaviour
   public AudioClip crash;
   public AudioSource audioPlayer;
 
+  public UIPauseMenu pause;
+
   public static Character instance; 
   private void Awake() => instance = this;
   private LevelUp levelup;
@@ -46,18 +48,23 @@ public class Character : MonoBehaviour
     void FixedUpdate() 
     {
         _rb2d.MovePosition(transform.position + (new Vector3(Input.GetAxisRaw("Horizontal"),Input.GetAxisRaw("Vertical"),0) * speed * Time.fixedDeltaTime));
+        if (Input.GetKeyDown(KeyCode.Escape)) {
+          Time.fixedDeltaTime = 0.0f;
+          pause.OpenInGameMenu();
+        }
         // This is the spacy movement:
         //rb2d.AddForce(new Vector2(Input.GetAxisRaw("Horizontal"), Input.GetAxisRaw("Vertical")) * forceMultiplier * Time.fixedDeltaTime );
         // This is the exact movement:
         //rb2d.velocity = (new Vector3(Input.GetAxisRaw("Horizontal"),Input.GetAxisRaw("Vertical"),0)) * speed;
     }
 
+
     private void OnTriggerEnter2D(Collider2D other) 
     {
       if(other.tag == "Fuel"){
         Destroy(other.gameObject);
         points+=1;
-        if (points % 3 == 0) {
+        if (points % 15 == 0) {
           level += 1;
           levelup.onNewLevel();
         }
